@@ -28,4 +28,5 @@ public interface IDataset {
      * @return the number of rows in the dataset
      */
     public int size();
+
 }
