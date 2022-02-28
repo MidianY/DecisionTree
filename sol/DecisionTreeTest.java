@@ -6,6 +6,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.junit.Before;
+import src.DecisionTreeCSVParser;
+import src.Row;
+
+import java.util.List;
 
 public class DecisionTreeTest {
     
@@ -20,5 +24,10 @@ public class DecisionTreeTest {
     }
     
     // TODO: Add your tests here!
-    
+
+
+    @Test
+    public void test(){
+        List<Row> dataset = DecisionTreeCSVParser.parse("documents/to/csv");
+    }
 }

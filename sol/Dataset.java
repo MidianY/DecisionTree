@@ -2,7 +2,6 @@ package sol;
 
 import src.Row;
 import src.IDataset;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
 public class Dataset implements IDataset {
     List<String> attributeNames;
     List<Row> rowList;
-
 
     public Dataset(List<String> attributeNames, List<Row> rowList){
         this.attributeNames = attributeNames;
@@ -49,14 +47,13 @@ public class Dataset implements IDataset {
         return newList;
     }
 
-
     /**
      *
      * @param splitAttribute
      * @return splits a dataset depending on the splitAttribute that is passed into the function using
      * filter and getsSpecificAttribute method above
      */
-    public List<Dataset> splitData(String splitAttribute){
+    public List<Dataset> splitDataset(String splitAttribute){
         List<Dataset> subset = new ArrayList<>();
         List<String> attList = this.getSpecificAttribute(splitAttribute); //the list returned from getSpecificAttribute
         List<String> newAttribute = this.filterAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
@@ -73,6 +70,8 @@ public class Dataset implements IDataset {
         return subset;
     }
 
+    //boolean to check if whether every datum in the dataset is the same
+
     @Override
     public List<String> getAttributeList(){
         return this.attributeNames;
@@ -87,7 +86,6 @@ public class Dataset implements IDataset {
     public int size(){
         return this.rowList.size();
     }
-
 
 
 }
