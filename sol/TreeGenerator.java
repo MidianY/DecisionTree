@@ -21,7 +21,7 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     }
 
     @Override
-    public void generateTree(D trainingData, String targetAttribute){
+    public void generateTree(Dataset trainingData, String targetAttribute){
 
     }
 

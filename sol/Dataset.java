@@ -53,7 +53,7 @@ public class Dataset implements IDataset {
      * @return splits a dataset depending on the splitAttribute that is passed into the function using
      * filter and getsSpecificAttribute method above
      */
-    public List<Dataset> splitDataset(String splitAttribute){
+    public List<Dataset> partition(String splitAttribute){
         List<Dataset> subset = new ArrayList<>();
         List<String> attList = this.getSpecificAttribute(splitAttribute); //the list returned from getSpecificAttribute
         List<String> newAttribute = this.filterAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
