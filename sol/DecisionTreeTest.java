@@ -13,6 +13,8 @@ import java.util.List;
 
 public class DecisionTreeTest {
     List<Row> singleRow;
+    Dataset singleData;
+    List<String> list;
     
     // Constructor for DecisionTreeTest tester class - don't need to add anything in here!
     public DecisionTreeTest() {
@@ -29,8 +31,12 @@ public class DecisionTreeTest {
 
     @Test
     public void test(){
-        //this.singleRow = DecisionTreeCSVParser.parse("data/to/food.csv");
-        //this.singleData = new Dataset("color", this.singleRow);
-        //System.out.println(dataset.size());
+//        this.singleRow = DecisionTreeCSVParser.parse("data/to/food.csv");
+//        this.list.add("color");
+//        this.list.add("highProtein");
+//        this.list.add("foodType");
+//        this.singleData = new Dataset(this.list, this.singleRow);
+//        this.singleData.partition("Color");
+//        System.out.println(this.singleData);
     }
 }

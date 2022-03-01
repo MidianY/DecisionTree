@@ -1,13 +1,13 @@
 package sol;
 import src.Row;
-import java.util.LinkedList;
+import java.util.List;
 
 public class Node implements ITreeNode{
-    public LinkedList<Edge> edgeList;
+    public List<Edge> edgeList;
     public String attribute;
     public String result;
 
-    public Node(String attribute, LinkedList<Edge> edgeList, String result){
+    public Node(String attribute, List<Edge> edgeList, String result){
         this.attribute = attribute;
         this.edgeList = edgeList;
         this.result = result;

@@ -4,7 +4,6 @@ import src.Row;
 import src.IDataset;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A class that implements the IDataset interface,
@@ -25,7 +24,7 @@ public class Dataset implements IDataset {
      * @param attribute
      * @return
      */
-    public List<String> getSpecificAttribute(String attribute){
+    public List<String> getDistinctValues(String attribute){
         List<String> specificValues = new ArrayList<>();
         for (Row row: this.rowList) { //for each row in the list of rows we have
             String attributeValue = row.getAttributeValue(attribute); //store the attribute value in a variable
@@ -35,6 +34,17 @@ public class Dataset implements IDataset {
         }
         return specificValues; //returns the specific attributes
     }
+
+    //gets the most common attribute
+    public String getSharedValue(){
+        if(this.isEmpty()){
+            throw new RuntimeException("Dataset is Empty");
+        }
+        else{
+            return this.attributeNames.get(0);
+        }
+    }
+
 
     /**
      *
@@ -57,7 +67,7 @@ public class Dataset implements IDataset {
      */
     public List<Dataset> partition(String splitAttribute){
         List<Dataset> subset = new ArrayList<>();
-        List<String> attList = this.getSpecificAttribute(splitAttribute); //the list returned from getSpecificAttribute
+        List<String> attList = this.getDistinctValues(splitAttribute); //the list returned from getSpecificAttribute
         List<String> newAttribute = this.filterAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
 
         for (String attribute: attList){ //for each attribute returned from getSpecificAttribute
@@ -67,12 +77,27 @@ public class Dataset implements IDataset {
                     currValue.add(row);
                 }
             }
-            subset.add(new Dataset(newAttribute, currValue));
+            Dataset ds = new  Dataset(newAttribute, currValue);
+            subset.add(ds);
         }
         return subset;
     }
 
-    //boolean to check if whether every datum in the dataset is the same
+    public boolean sameValue(String attribute){
+        if(this.isEmpty()) {
+            for (Row row : this.rowList) {
+                row.getAttributeValue(attribute).equals(this.rowList.get(0).getAttributeValue(attribute));
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public boolean isEmpty(){
+        return this.rowList == null;
+    }
 
     @Override
     public List<String> getAttributeList(){
@@ -82,12 +107,13 @@ public class Dataset implements IDataset {
     @Override
     public List<Row> getDataObjects(){
         return this.rowList;
-
     }
 
     @Override
     public int size(){
         return this.rowList.size();
     }
+
+
 
 }
