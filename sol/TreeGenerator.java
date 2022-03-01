@@ -9,20 +9,25 @@ import src.Row;
  */
 public class TreeGenerator implements ITreeGenerator<Dataset> {
 
+
     public TreeGenerator(){
 
     }
 
 
-    @Override
-    public String getDecision(Row datum){
 
-        return null;
-    }
 
     @Override
     public void generateTree(Dataset trainingData, String targetAttribute){
 
     }
+    @Override
+    public String getDecision(Row datum){
+
+        return null;
+
+    }
+
+
 
 }

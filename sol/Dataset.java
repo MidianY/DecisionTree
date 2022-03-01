@@ -2,6 +2,7 @@ package sol;
 
 import src.Row;
 import src.IDataset;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,11 @@ import java.util.List;
  * representing a training data set.
  */
 public class Dataset implements IDataset {
+
     List<String> attributeNames;
     List<Row> rowList;
 
-    public Dataset(List<String> attributeNames, List<Row> rowList){
+    public  Dataset(List<String> attributeNames, List<Row> rowList){
         this.attributeNames = attributeNames;
         this.rowList = rowList;
     }
@@ -80,12 +82,12 @@ public class Dataset implements IDataset {
     @Override
     public List<Row> getDataObjects(){
         return this.rowList;
+
     }
 
     @Override
     public int size(){
         return this.rowList.size();
     }
-
 
 }
