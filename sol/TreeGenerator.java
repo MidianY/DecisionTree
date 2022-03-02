@@ -17,31 +17,25 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
 
     }
 
-    public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute, List<String> unusedAttributes){
+    public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
         if (trainingData.sameValue(targetAttribute)){ //if all the rows have the same value
            return new Leaf(targetAttribute, trainingData.getSharedValue());
         }
 
         else {
-            //choose a previously unused attribute randomly
             Random randomData = new Random();
-            int randNumber = randomData.nextInt(unusedAttributes.size());
-            //int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
+            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
 
-            //create a list of edges and a random attribute to split the data on
+            List<Dataset> splitData = trainingData.partition(targetAttribute);
             List<Edge> edgeList = new ArrayList<>();
-            String partAttribute = trainingData.getAttributeList().get(randNumber);
 
-            //removing the attribute from the list once it has been used
-            List<String> copyUnusedAttributes = new ArrayList<>(unusedAttributes);
-            copyUnusedAttributes.remove(trainingData.getAttributeList().get(randNumber));
-
-            for(Dataset dataset: trainingData.partition(partAttribute)){
-                Edge newEdge = new Edge(dataset.getSharedValue(), this.generateTreeHelper(trainingData, targetAttribute, copyUnusedAttributes));
-                edgeList.add(newEdge);
+            for(Dataset dataset: splitData){
+                Edge edge = new Edge(dataset.rowList.get(0).getAttributeValue(targetAttribute),
+                        this.generateTreeHelper(dataset, dataset.getAttributeList().get(randNumber)));
+                edgeList.add(edge);
             }
 
-            Node newNode = new Node(partAttribute, edgeList, trainingData.getDefaultValues(targetAttribute));
+            Node newNode = new Node(targetAttribute,edgeList, trainingData.getDefaultValues(targetAttribute));
             return newNode;
         }
     }
@@ -52,7 +46,7 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     public void generateTree(Dataset trainingData, String targetAttribute){
         List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
         unusedAttributes.remove(targetAttribute);
-        ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute, unusedAttributes);
+        ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute);
         this.rootNode = newNode;
     }
 
