@@ -46,6 +46,8 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     public void generateTree(Dataset trainingData, String targetAttribute){
         List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
         unusedAttributes.remove(targetAttribute);
+        //do we need to do this?
+
         ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute);
         this.rootNode = newNode;
     }
