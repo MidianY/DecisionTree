@@ -93,6 +93,23 @@ public class Dataset implements IDataset {
         return false;
     }
 
+    public String getDefaultValues(String attribute){
+        if(!isEmpty()) {
+            int length = 0;
+            String defValue = null;
+            List<Dataset> partitioned = this.partition(attribute);
+
+            for(Dataset dataset : partitioned){
+                if(dataset.size() > length){
+                    length = dataset.size();
+                    defValue = dataset.getSharedValue();
+                }
+            }
+            return defValue;
+        } else {
+            throw new RuntimeException("Dataset is empty");
+        }
+    }
 
 
     public boolean isEmpty(){
@@ -113,7 +130,5 @@ public class Dataset implements IDataset {
     public int size(){
         return this.rowList.size();
     }
-
-
 
 }
