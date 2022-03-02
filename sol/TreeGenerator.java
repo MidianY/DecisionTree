@@ -18,24 +18,28 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     }
 
     public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
+        if(trainingData.getAttributeList().size() == 0){
+            throw new RuntimeException("Dataset is empty");
+        }
         if (trainingData.sameValue(targetAttribute)){ //if all the rows have the same value
            return new Leaf(targetAttribute, trainingData.getSharedValue());
         }
 
         else {
             Random randomData = new Random();
-            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
+            //int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
+            String randAtt = trainingData.getAttributeList().get(0);
 
-            List<Dataset> splitData = trainingData.partition(targetAttribute);
+            List<Dataset> splitData = trainingData.partition(randAtt);
             List<Edge> edgeList = new ArrayList<>();
 
             for(Dataset dataset: splitData){
                 Edge edge = new Edge(dataset.rowList.get(0).getAttributeValue(targetAttribute),
-                        this.generateTreeHelper(dataset, dataset.getAttributeList().get(randNumber)));
+                        this.generateTreeHelper(dataset, randAtt));
                 edgeList.add(edge);
             }
 
-            Node newNode = new Node(targetAttribute,edgeList, trainingData.getDefaultValues(targetAttribute));
+            Node newNode = new Node(randAtt,edgeList, trainingData.getDefaultValues(targetAttribute));
             return newNode;
         }
     }
@@ -46,8 +50,6 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     public void generateTree(Dataset trainingData, String targetAttribute){
         List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
         unusedAttributes.remove(targetAttribute);
-        //do we need to do this?
-
         ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute);
         this.rootNode = newNode;
     }
@@ -56,4 +58,5 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     public String getDecision(Row datum){
         return this.rootNode.getDecision(datum);
     }
+
 }

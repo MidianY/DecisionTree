@@ -97,10 +97,11 @@ public class Dataset implements IDataset {
         if(!isEmpty()) {
             int length = 0;
             String defValue = null;
+
             List<Dataset> partitioned = this.partition(attribute);
 
-            for(Dataset dataset : partitioned){
-                if(dataset.size() > length){
+            for(Dataset dataset : partitioned){ //for each row in the dataset
+                if(dataset.size() > length){ //if the dataset size > length
                     length = dataset.size();
                     defValue = dataset.getSharedValue();
                 }
