@@ -1,5 +1,6 @@
 package sol;
 
+import src.IDataset;
 import src.ITreeGenerator;
 import src.Row;
 import java.util.ArrayList;
@@ -14,18 +15,23 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     ITreeNode rootNode;
 
     public TreeGenerator(){
-
     }
+
 
     public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
         if(trainingData.getAttributeList().size() == 0){
+            System.out.println("love");
             throw new RuntimeException("Dataset is empty");
         }
+
         if (trainingData.sameValue(targetAttribute)){ //if all the rows have the same value
            return new Leaf(targetAttribute, trainingData.getSharedValue());
         }
 
         else {
+            List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
+            unusedAttributes.remove(targetAttribute);
+
             Random randomData = new Random();
             //int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
             String randAtt = trainingData.getAttributeList().get(0);
@@ -39,8 +45,7 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
                 edgeList.add(edge);
             }
 
-            Node newNode = new Node(randAtt,edgeList, trainingData.getDefaultValues(targetAttribute));
-            return newNode;
+            return new Node(randAtt,edgeList, trainingData.getDefaultValues(targetAttribute));
         }
     }
 
@@ -48,8 +53,6 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
     //target attribute should be changed in generate tree.. get target attribute and remove it from the list
     @Override
     public void generateTree(Dataset trainingData, String targetAttribute){
-        List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
-        unusedAttributes.remove(targetAttribute);
         ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute);
         this.rootNode = newNode;
     }
