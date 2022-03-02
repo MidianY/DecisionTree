@@ -3,6 +3,9 @@ package sol;
 import src.ITreeGenerator;
 import src.Row;
 
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -43,37 +46,51 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
 
 
     //each recursive call returns the root of the subtree
-    public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute, List<String> unusedAttribute){
+    public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
         if (trainingData.sameValue(targetAttribute)){ //if all the rows have the same value
-            new Leaf(targetAttribute, trainingData.getSharedValue());
+           return new Leaf(targetAttribute, trainingData.getSharedValue());
         }
+
         else {
+            //choose a previously unused attribute randomly
             Random randomData = new Random();
-            int randNumber = randomData.nextInt(unusedAttribute.size());
-            List<Dataset> splitData = trainingData.partition(targetAttribute);
+            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
 
+            //create a list of edges and a random attribute to split the data on
+            List<Edge> edgeList = new ArrayList<>();
+            String partAttribute = trainingData.getAttributeList().get(randNumber);
 
+            //removing the attribute from the list once it has been used
+            List<String> copyUnusedAttributes = new ArrayList<>(trainingData.getAttributeList());
+            copyUnusedAttributes.remove(trainingData.getAttributeList().get(randNumber));
+
+            //where we are going to split the data
+//            List<Dataset> splitData = trainingData.partition(targetAttribute);
+
+            for(Dataset dataset: trainingData.partition(partAttribute)){
+                Edge newEdge = new Edge(dataset.getSharedValue(), this.generateTreeHelper(trainingData, targetAttribute));
+                edgeList.add(newEdge);
+            }
+
+            Node newNode = new Node(partAttribute, edgeList, trainingData.getDefaultValues);
+            return newNode;
         }
-
-        return null;
     }
 
 
     //target attribute should be changed in generate tree.. get target attribute and remove it from the list
-    //
     @Override
     public void generateTree(Dataset trainingData, String targetAttribute){
+        List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
+        unusedAttributes.remove(targetAttribute);
+        ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute);
+        this.rootNode = newNode;
 
     }
+
+
     @Override
     public String getDecision(Row datum){
-
-        return null;
-
+        return this.rootNode.getDecision(datum);
     }
-
-
-
-
-
 }
