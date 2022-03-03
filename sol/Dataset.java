@@ -70,7 +70,8 @@ public class Dataset implements IDataset {
     public List<Dataset> partition(String splitAttribute){
         List<Dataset> subset = new ArrayList<>();
         List<String> attList = this.getDistinctValues(splitAttribute); //the list returned from getSpecificAttribute
-        List<String> newAttribute = this.removeAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
+
+        //List<String> newAttribute = this.removeAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
 
         for (String attribute: attList){ //for each attribute returned from getSpecificAttribute
             List<Row> currValue = new ArrayList<>(); //create a new row
@@ -79,11 +80,13 @@ public class Dataset implements IDataset {
                     currValue.add(row);
                 }
             }
-            Dataset ds = new  Dataset(newAttribute, currValue);
+            Dataset ds = new  Dataset(this.getAttributeList(), currValue);
             subset.add(ds);
         }
         return subset;
     }
+
+
 
     public boolean sameValue(String attribute){
         if(this.isEmpty()) {
@@ -100,9 +103,9 @@ public class Dataset implements IDataset {
             int length = 0;
             String defValue = null;
 
-            List<Dataset> partitioned = this.partition(attribute);
+            //List<Dataset> partitioned = this.partition(attribute);
 
-            for(Dataset dataset : partitioned){ //for each row in the dataset
+            for(Dataset dataset : this.partition(attribute)){ //for each row in the dataset
                 if(dataset.size() > length){ //if the dataset size > length
                     length = dataset.size();
                     defValue = dataset.getSharedValue(attribute);
@@ -126,8 +129,6 @@ public class Dataset implements IDataset {
             return this.attributeNames.get(random1);
         }
     }
-
-
 
     public boolean isEmpty(){
         return this.rowList == null;

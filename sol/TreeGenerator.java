@@ -12,6 +12,7 @@ import java.util.Random;
  */
 public class TreeGenerator implements ITreeGenerator<Dataset> {
     ITreeNode rootNode;
+    List<String> data;
 
     public TreeGenerator(){
     }
@@ -23,33 +24,34 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
 //            throw new RuntimeException("Dataset is empty");
 //        }
 
-        if (trainingData.sameValue(targetAttribute) || trainingData.getAttributeList().size()==0){ //if all the rows have the same value
-           return new Leaf(targetAttribute, trainingData.getSharedValue(targetAttribute));
+        if (trainingData.sameValue(targetAttribute) || this.data.size()==0){ //if all the rows have the same value
+           return new Leaf(targetAttribute, trainingData.getDefaultValues(targetAttribute));
         }
         else {
-//            List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
-//            unusedAttributes.remove(targetAttribute);
-//            Random randomData = new Random();
-//            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
+            Random attr = new Random();
+            int newAttr = attr.nextInt(this.data.size());
+            String randAtt = this.data.get(newAttr);
 
-            String randAtt = trainingData.random();
+
+            this.data.remove(randAtt);
 
             List<Dataset> splitData = trainingData.partition(randAtt);
             List<Edge> edgeList = new ArrayList<>();
 
             for(Dataset dataset: splitData){
-                Edge edge = new Edge(dataset.rowList.get(0).getAttributeValue(targetAttribute),
-                        this.generateTreeHelper(dataset, randAtt));
+                Edge edge = new Edge(dataset.getSharedValue(randAtt),
+                        this.generateTreeHelper(dataset, targetAttribute));
                 edgeList.add(edge);
             }
-
-            return new Node(targetAttribute,edgeList, trainingData.getDefaultValues(targetAttribute));
+            return new Node(randAtt, edgeList, trainingData.getDefaultValues(targetAttribute));
         }
     }
 
     //target attribute should be changed in generate tree.. get target attribute and remove it from the list
     @Override
     public void generateTree(Dataset trainingData, String targetAttribute){
+        this.data = new ArrayList<>(trainingData.getAttributeList());
+        this.data.remove(targetAttribute);
         ITreeNode newNode = this.generateTreeHelper(trainingData, targetAttribute);
         this.rootNode = newNode;
     }
