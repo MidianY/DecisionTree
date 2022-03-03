@@ -31,8 +31,6 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
             Random attr = new Random();
             int newAttr = attr.nextInt(this.data.size());
             String randAtt = this.data.get(newAttr);
-
-
             this.data.remove(randAtt);
 
             List<Dataset> splitData = trainingData.partition(randAtt);

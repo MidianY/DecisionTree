@@ -86,7 +86,6 @@ public class Dataset implements IDataset {
     }
 
 
-
     public boolean sameValue(String attribute){
         if(this.isEmpty()) {
             for (Row row : this.rowList) {

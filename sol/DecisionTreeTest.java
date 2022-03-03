@@ -1,13 +1,11 @@
 package sol;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import src.DecisionTreeCSVParser;
 import src.Row;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,6 @@ public class DecisionTreeTest {
     
     // Constructor for DecisionTreeTest tester class - don't need to add anything in here!
     public DecisionTreeTest() {
-
     }
 
     @Before
@@ -27,7 +24,7 @@ public class DecisionTreeTest {
         this.singleRow = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
         this.list.add("color");
         this.list.add("highProtein");
-        this.list.add("foodType");
+        this.list.add("calories");
         this.singleData = new Dataset(this.list, this.singleRow);
     }
 
@@ -44,15 +41,13 @@ public class DecisionTreeTest {
         }
     }
 
-
-
     //tests getAttributeList method on Dataset and list created in this class
     @Test
     public void getAttributeValue(){
         List<String> list1 = new ArrayList<>();
         list1.add("color");
         list1.add("highProtein");
-        list1.add("foodType");
+        list1.add("calories");
         Assert.assertTrue(this.compareTwoLists(list1, this.singleData.getAttributeList()));
     }
 
@@ -71,16 +66,18 @@ public class DecisionTreeTest {
         this.singleData.partition("sports");
     }
 
+    //testing
     @Test
-    public void getDecision(){
+    public void getDecisionTest(){
         List<Row> dataObjects = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
         List<String> attributeList = new ArrayList<>(dataObjects.get(0).getAttributes());
         Dataset training = new Dataset(attributeList, dataObjects);
 
         TreeGenerator generator = new TreeGenerator();
-        generator.generateTree(training, "color");
+        generator.generateTree(training, "foodType");
 
-        Row tangerine = new Row("tang");
+        Row tangerine = new Row("tangerine");
+        tangerine.setAttributeValue("name", "tangerine");
         tangerine.setAttributeValue("color", "orange");
         tangerine.setAttributeValue("highProtein", "false");
         tangerine.setAttributeValue("calories", "high");
