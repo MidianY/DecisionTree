@@ -23,7 +23,7 @@ public class Dataset implements IDataset {
     /**
      *
      * @param attribute
-     * @return
+     * @return a list of distinct attributes
      */
     public List<String> getDistinctValues(String attribute){
         List<String> specificValues = new ArrayList<>();
@@ -46,7 +46,6 @@ public class Dataset implements IDataset {
                     //this.attributeNames.get(0).;
         }
     }
-
 
     /**
      *
@@ -102,8 +101,6 @@ public class Dataset implements IDataset {
         if(!isEmpty()) {
             int length = 0;
             String defValue = null;
-
-            //List<Dataset> partitioned = this.partition(attribute);
 
             for(Dataset dataset : this.partition(attribute)){ //for each row in the dataset
                 if(dataset.size() > length){ //if the dataset size > length

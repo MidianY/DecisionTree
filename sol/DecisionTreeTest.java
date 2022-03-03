@@ -1,6 +1,9 @@
 package sol;
 
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import src.DecisionTreeCSVParser;
 import src.Row;
@@ -15,31 +18,61 @@ public class DecisionTreeTest {
     
     // Constructor for DecisionTreeTest tester class - don't need to add anything in here!
     public DecisionTreeTest() {
+
+    }
+
+    @Before
+    public void setupData(){
         this.list = new ArrayList<>();
-    }
-    
-    @Test
-    public void testExample() { 
-        assertEquals(6, 1 + 2 + 3);
-    }
-    // TODO: Add your tests here!
-
-
-    @Test
-    public void test(){
         this.singleRow = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
         this.list.add("color");
         this.list.add("highProtein");
         this.list.add("foodType");
         this.singleData = new Dataset(this.list, this.singleRow);
+    }
+
+    public boolean compareTwoLists(List<String> l1, List<String> l2) {
+        if (l1.size() != l2.size()) {
+            return false;
+        } else {
+            for (int i = 0; i < l1.size(); i++) {
+                if (!(l1.get(i).equals(l2.get(i)))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+
+
+    //tests getAttributeList method on Dataset and list created in this class
+    @Test
+    public void getAttributeValue(){
+        List<String> list1 = new ArrayList<>();
+        list1.add("color");
+        list1.add("highProtein");
+        list1.add("foodType");
+        Assert.assertTrue(this.compareTwoLists(list1, this.singleData.getAttributeList()));
+    }
+
+    //expected output is 3 colors based on dataset that is created
+    @Test
+    public void partitionTest(){
         List<Dataset> datasets = this.singleData.partition("color");
         for(Dataset dataset: datasets){
             System.out.println(dataset.getDataObjects().get(0).getAttributeValue("color"));
         }
     }
 
+    //test that makes sure dataset doesn't partition on an unknown attribute
+    @Test(expected = RuntimeException.class)
+    public void partitionRuntimeException() {
+        this.singleData.partition("sports");
+    }
+
     @Test
-    public void test1(){
+    public void getDecision(){
         List<Row> dataObjects = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
         List<String> attributeList = new ArrayList<>(dataObjects.get(0).getAttributes());
         Dataset training = new Dataset(attributeList, dataObjects);
