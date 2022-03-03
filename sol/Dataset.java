@@ -4,6 +4,7 @@ import src.Row;
 import src.IDataset;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class that implements the IDataset interface,
@@ -36,12 +37,13 @@ public class Dataset implements IDataset {
     }
 
     //gets the most common attribute
-    public String getSharedValue(){
+    public String getSharedValue(String att){
         if(this.isEmpty()){
             throw new RuntimeException("Dataset is Empty");
         }
         else{
-            return this.attributeNames.get(0);
+            return this.rowList.get(0).getAttributeValue(att);
+                    //this.attributeNames.get(0).;
         }
     }
 
@@ -103,14 +105,28 @@ public class Dataset implements IDataset {
             for(Dataset dataset : partitioned){ //for each row in the dataset
                 if(dataset.size() > length){ //if the dataset size > length
                     length = dataset.size();
-                    defValue = dataset.getSharedValue();
+                    defValue = dataset.getSharedValue(attribute);
                 }
             }
             return defValue;
-        } else {
+        }
+        else {
             throw new RuntimeException("Dataset is empty");
         }
     }
+
+    public String random(){
+        Random random = new Random();
+
+        if (this.attributeNames.size() == 0){
+            throw new RuntimeException("Data is empty");
+        }
+        else{
+            int random1 = random.nextInt(this.attributeNames.size());
+            return this.attributeNames.get(random1);
+        }
+    }
+
 
 
     public boolean isEmpty(){

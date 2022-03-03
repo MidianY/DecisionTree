@@ -18,22 +18,21 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
 
 
     public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
-        if(trainingData.size() == 0){
-            System.out.println("love");
-            throw new RuntimeException("Dataset is empty");
-        }
+//        if(trainingData.size() == 0){
+//            System.out.println("love");
+//            throw new RuntimeException("Dataset is empty");
+//        }
 
-        if (trainingData.sameValue(targetAttribute)){ //if all the rows have the same value
-           return new Leaf(targetAttribute, trainingData.getSharedValue());
+        if (trainingData.sameValue(targetAttribute) || trainingData.getAttributeList().size()==0){ //if all the rows have the same value
+           return new Leaf(targetAttribute, trainingData.getSharedValue(targetAttribute));
         }
-
         else {
-            List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
-            unusedAttributes.remove(targetAttribute);
+//            List<String> unusedAttributes = new ArrayList(trainingData.getAttributeList());
+//            unusedAttributes.remove(targetAttribute);
+//            Random randomData = new Random();
+//            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
 
-            Random randomData = new Random();
-            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
-            String randAtt = trainingData.getAttributeList().get(randNumber);
+            String randAtt = trainingData.random();
 
             List<Dataset> splitData = trainingData.partition(randAtt);
             List<Edge> edgeList = new ArrayList<>();
@@ -44,10 +43,9 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
                 edgeList.add(edge);
             }
 
-            return new Node(randAtt,edgeList, trainingData.getDefaultValues(targetAttribute));
+            return new Node(targetAttribute,edgeList, trainingData.getDefaultValues(targetAttribute));
         }
     }
-
 
     //target attribute should be changed in generate tree.. get target attribute and remove it from the list
     @Override
