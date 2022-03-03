@@ -41,8 +41,6 @@ public class DecisionTreeTest {
         for(Dataset dataset: datasets){
             System.out.println(dataset.getDataObjects().get(0).getAttributeValue("color"));
         }
-
-        //System.out.println(this.singleData.partition("color"));
     }
 
     @Test

@@ -54,13 +54,9 @@ public class Dataset implements IDataset {
      * the new list
      */
     public List<String> removeAttribute(List<String> oldList, String removeString){
-        oldList.remove(removeString);
-        return oldList;
-
-//        return newList;
-//        List<String> newList = new ArrayList<>();
-//        oldList.remove(removeString);
-//        return newList;
+        List<String> newList = new ArrayList<>(oldList);
+        newList.remove(removeString);
+        return newList;
     }
 
     /**
