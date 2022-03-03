@@ -27,7 +27,6 @@ public class DecisionTreeTest {
     public void testExample() { 
         assertEquals(6, 1 + 2 + 3);
     }
-    
     // TODO: Add your tests here!
 
 
@@ -45,4 +44,23 @@ public class DecisionTreeTest {
 
         //System.out.println(this.singleData.partition("color"));
     }
+
+    @Test
+    public void test1(){
+        List<Row> dataObjects = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
+        List<String> attributeList = new ArrayList<>(dataObjects.get(0).getAttributes());
+        Dataset training = new Dataset(attributeList, dataObjects);
+
+        TreeGenerator generator = new TreeGenerator();
+        generator.generateTree(training, "color");
+
+        Row tangerine = new Row("tang");
+        tangerine.setAttributeValue("color", "orange");
+        tangerine.setAttributeValue("highProtein", "false");
+        tangerine.setAttributeValue("calories", "high");
+        String decision = generator.getDecision(tangerine);
+
+        System.out.println(decision);
+    }
+
 }

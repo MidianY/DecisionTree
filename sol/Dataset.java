@@ -53,10 +53,14 @@ public class Dataset implements IDataset {
      * @return filters through a given list and returns the new list without the old attribute in
      * the new list
      */
-    public List<String> filterAttribute(List<String> oldList, String removeString){
-        List<String> newList = new ArrayList<>();
-        newList.remove(removeString);
-        return newList;
+    public List<String> removeAttribute(List<String> oldList, String removeString){
+        oldList.remove(removeString);
+        return oldList;
+
+//        return newList;
+//        List<String> newList = new ArrayList<>();
+//        oldList.remove(removeString);
+//        return newList;
     }
 
     /**
@@ -68,7 +72,7 @@ public class Dataset implements IDataset {
     public List<Dataset> partition(String splitAttribute){
         List<Dataset> subset = new ArrayList<>();
         List<String> attList = this.getDistinctValues(splitAttribute); //the list returned from getSpecificAttribute
-        List<String> newAttribute = this.filterAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
+        List<String> newAttribute = this.removeAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
 
         for (String attribute: attList){ //for each attribute returned from getSpecificAttribute
             List<Row> currValue = new ArrayList<>(); //create a new row

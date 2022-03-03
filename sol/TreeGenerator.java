@@ -1,6 +1,5 @@
 package sol;
 
-import src.IDataset;
 import src.ITreeGenerator;
 import src.Row;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
 
 
     public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
-        if(trainingData.getAttributeList().size() == 0){
+        if(trainingData.size() == 0){
             System.out.println("love");
             throw new RuntimeException("Dataset is empty");
         }
@@ -33,8 +32,8 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
             unusedAttributes.remove(targetAttribute);
 
             Random randomData = new Random();
-            //int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
-            String randAtt = trainingData.getAttributeList().get(0);
+            int randNumber = randomData.nextInt(trainingData.getAttributeList().size());
+            String randAtt = trainingData.getAttributeList().get(randNumber);
 
             List<Dataset> splitData = trainingData.partition(randAtt);
             List<Edge> edgeList = new ArrayList<>();
