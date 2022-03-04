@@ -73,7 +73,8 @@ public class Dataset implements IDataset {
         List<Dataset> subset = new ArrayList<>();
         List<String> attList = this.getDistinctValues(splitAttribute); //the list returned from getSpecificAttribute
 //        List<String> newAttList = this.removeAttribute(this.attributeNames, splitAttribute);
-        //List<String> newAttribute = this.removeAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
+
+        List<String> newAttribute = this.removeAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
 
         for (String attribute: attList){ //for each attribute returned from getSpecificAttribute
             List<Row> currValue = new ArrayList<>(); //create a new row
@@ -82,7 +83,7 @@ public class Dataset implements IDataset {
                     currValue.add(row);
                 }
             }
-            Dataset ds = new Dataset(this.getAttributeList(), currValue);
+            Dataset ds = new Dataset(newAttribute, currValue);
             subset.add(ds);
         }
         return subset;
@@ -90,7 +91,7 @@ public class Dataset implements IDataset {
 
 
     public boolean sameValue(String attribute){
-        if(this.isEmpty()) {
+        if(this.getDataObjects()==null) {
             for (Row row : this.rowList) {
                 row.getAttributeValue(attribute).equals(this.rowList.get(0).getAttributeValue(attribute));
             }
