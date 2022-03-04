@@ -19,10 +19,10 @@ public class TreeGenerator implements ITreeGenerator<Dataset> {
 
 
     public ITreeNode generateTreeHelper(Dataset trainingData, String targetAttribute){
-//        if(trainingData.size() == 0){
-//            System.out.println("love");
-//            throw new RuntimeException("Dataset is empty");
-//        }
+        if(trainingData.size() == 0){
+            System.out.println("love");
+            throw new RuntimeException("Dataset is empty");
+        }
 
         if (trainingData.sameValue(targetAttribute) || this.data.size()==0){ //if all the rows have the same value
            return new Leaf(targetAttribute, trainingData.getDefaultValues(targetAttribute));

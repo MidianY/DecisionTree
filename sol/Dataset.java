@@ -33,6 +33,7 @@ public class Dataset implements IDataset {
                 specificValues.add(attributeValue); //if distinct value does not contain the rows attribute values adds it to list
             }
         }
+
         return specificValues; //returns the specific attributes
     }
 
@@ -55,7 +56,9 @@ public class Dataset implements IDataset {
      * the new list
      */
     public List<String> removeAttribute(List<String> oldList, String removeString){
-        List<String> newList = new ArrayList<>(oldList);
+//        List<String> newList = new ArrayList<>(oldList);
+        List<String> newList = new ArrayList<>();
+        newList.addAll(oldList);
         newList.remove(removeString);
         return newList;
     }
@@ -69,7 +72,7 @@ public class Dataset implements IDataset {
     public List<Dataset> partition(String splitAttribute){
         List<Dataset> subset = new ArrayList<>();
         List<String> attList = this.getDistinctValues(splitAttribute); //the list returned from getSpecificAttribute
-
+//        List<String> newAttList = this.removeAttribute(this.attributeNames, splitAttribute);
         //List<String> newAttribute = this.removeAttribute(this.attributeNames, splitAttribute); //the attributes left after removing splitAttribute
 
         for (String attribute: attList){ //for each attribute returned from getSpecificAttribute
@@ -79,7 +82,7 @@ public class Dataset implements IDataset {
                     currValue.add(row);
                 }
             }
-            Dataset ds = new  Dataset(this.getAttributeList(), currValue);
+            Dataset ds = new Dataset(this.getAttributeList(), currValue);
             subset.add(ds);
         }
         return subset;

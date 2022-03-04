@@ -52,21 +52,21 @@ public class DecisionTreeTest {
     }
 
     //expected output is 3 colors based on dataset that is created
-    @Test
-    public void partitionTest(){
-        List<Dataset> datasets = this.singleData.partition("color");
-        for(Dataset dataset: datasets){
-            System.out.println(dataset.getDataObjects().get(0).getAttributeValue("color"));
-        }
-    }
+//    @Test
+//    public void partitionTest(){
+//        List<Dataset> datasets = this.singleData.partition("color");
+//        for(Dataset dataset: datasets){
+//            System.out.println(dataset.getDataObjects().get(0).getAttributeValue("color"));
+//        }
+//    }
 
     //test that makes sure dataset doesn't partition on an unknown attribute
-    @Test(expected = RuntimeException.class)
-    public void partitionRuntimeException() {
-        this.singleData.partition("sports");
-    }
+//    @Test(expected = RuntimeException.class)
+//    public void partitionRuntimeException() {
+//        this.singleData.partition("sports");
+//    }
 
-    //testing
+    //testing get Decision
     @Test
     public void getDecisionTest(){
         List<Row> dataObjects = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
@@ -84,6 +84,19 @@ public class DecisionTreeTest {
         String decision = generator.getDecision(tangerine);
 
         System.out.println(decision);
+    }
+
+
+    @Test
+    public void generateTreeHelperTest(){
+        List<Row> dataObjects = DecisionTreeCSVParser.parse("/Users/midianyoseph/Desktop/cs200/projects/decision-tree-Kyen24-midianY/data/food/food.csv");
+        List<String> attributeList = new ArrayList<>(dataObjects.get(0).getAttributes());
+        Dataset training = new Dataset(attributeList, dataObjects);
+
+        TreeGenerator generator = new TreeGenerator();
+        System.out.println(generator.generateTreeHelper(training, "foodType"));
+        //generator.generateTreeHelper(training, "foodType");
+
     }
 
 }
